@@ -62,7 +62,9 @@
         </div>
 
         <!-- PAGINATION -->
-        <div id="paginationContainer" class="flex justify-center flex-wrap gap-2 mt-8 mb-8"></div>
+        <nav id="paginationContainer"
+            class="flex justify-center items-center flex-wrap gap-2 mt-10 mb-12 p-6 bg-white rounded-lg shadow-md">
+        </nav>
 
         <!-- STATISTICS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
@@ -85,63 +87,88 @@
     @include('layouts.footer')
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
 
-        const API_URL = "/api/courses/search";
-        let currentPage = 1;
-        let currentQuery = "";
-        let currentCategory = "";
+            const API_URL = "/api/courses/search";
+            let currentPage = 1;
+            let currentQuery = "";
+            let currentCategory = "";
 
-        const coursesContainer = document.getElementById('coursesContainer');
-        const paginationContainer = document.getElementById('paginationContainer');
-        const emptyState = document.getElementById('emptyState');
-        const loading = document.getElementById('loading');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const searchInput = document.getElementById('searchInput');
+            const coursesContainer = document.getElementById('coursesContainer');
+            const paginationContainer = document.getElementById('paginationContainer');
+            const emptyState = document.getElementById('emptyState');
+            const loading = document.getElementById('loading');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const searchInput = document.getElementById('searchInput');
 
-        async function loadCourses(page = 1) {
-            loading.classList.remove('hidden');
-            emptyState.classList.add('hidden');
-            coursesContainer.innerHTML = "";
-            paginationContainer.innerHTML = "";
+            async function loadCourses(page = 1) {
+                loading.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+                coursesContainer.innerHTML = "";
+                paginationContainer.innerHTML = "";
 
-            const params = new URLSearchParams({
-                q: currentQuery,
-                category: currentCategory,
-                page: page,
-                per_page: 9
-            });
+                const params = new URLSearchParams({
+                    q: currentQuery,
+                    category: currentCategory,
+                    page: page,
+                    per_page: 9
+                });
 
-            const url = `${API_URL}?${params.toString()}`;
-            console.log("Fetch URL:", url);
+                const url = `${API_URL}?${params.toString()}`;
+                console.log("Fetch URL:", url);
 
-            try {
-                const res = await fetch(url);
-                const result = await res.json();
-                console.log("API Response:", result);
+                try {
+                    const res = await fetch(url);
 
-                loading.classList.add('hidden');
+                    if (!res.ok) {
+                        throw new Error(`HTTP Error: ${res.status}`);
+                    }
 
-                if (result.success && result.data && result.data.length > 0) {
-                    renderCourses(result.data);
-                    renderPagination(result.pagination);
-                    updateStatistics();
-                } else {
+                    const result = await res.json();
+                    console.log("API Response:", result);
+
+                    loading.classList.add('hidden');
+
+                    if (result.success && result.data && result.data.length > 0) {
+                        renderCourses(result.data);
+                        renderPagination(result.pagination);
+                        updateStatistics();
+                    } else {
+                        emptyState.classList.remove('hidden');
+                        console.warn("No data returned or API error");
+                    }
+                } catch (e) {
+                    console.error("Error fetching courses:", e);
+                    loading.classList.add('hidden');
                     emptyState.classList.remove('hidden');
-                }
-            } catch (e) {
-                console.error("Error:", e);
-                loading.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-            }
-        }
 
-        function renderCourses(courses) {
-            coursesContainer.innerHTML = courses.map(c => `
+                    // Fallback: load all courses on error
+                    try {
+                        const fallbackRes = await fetch(`${API_URL}?per_page=100`);
+                        const fallbackData = await fallbackRes.json();
+                        if (fallbackData.success && fallbackData.data.length > 0) {
+                            renderCourses(fallbackData.data);
+                            updateStatistics();
+                        }
+                    } catch (fallbackError) {
+                        console.error("Fallback also failed:", fallbackError);
+                    }
+                }
+            }
+
+            function renderCourses(courses) {
+                console.log("Rendering courses:", courses);
+                if (!courses || courses.length === 0) {
+                    coursesContainer.innerHTML = "";
+                    return;
+                }
+
+                coursesContainer.innerHTML = courses.map(c => `
                 <div class="bg-white p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                     <div class="bg-gradient-to-r from-green-400 to-green-500 p-4 rounded-t-lg mb-4 -m-5 mb-4">
-                        <p class="text-green-100 text-sm font-bold">${c.course_code}</p>
-                        <h3 class="font-bold text-lg text-white mt-1">${c.name}</h3>
+                        <p class="text-green-100 text-sm font-bold">ID: ${c.id}</p>
+                        <p class="text-green-100 text-sm font-bold">Kode: ${c.course_code}</p>
+                        <h3 class="font-bold text-lg text-white mt-2">${c.name}</h3>
                     </div>
                     <div class="space-y-2">
                         <p class="text-sm"><strong>SKS:</strong> ${c.sks}</p>
@@ -156,84 +183,116 @@
                     </div>
                 </div>
             `).join('');
-        }
 
-        function renderPagination(pagination) {
-            if (pagination.last_page <= 1) return;
-
-            let html = "";
-
-            if (pagination.current_page > 1) {
-                html +=
-                    `<button onclick="goToPage(${pagination.current_page - 1})" class="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600">← Sebelumnya</button>`;
+                console.log("Rendered " + courses.length + " courses");
             }
 
-            for (let i = 1; i <= pagination.last_page; i++) {
-                if (i === pagination.current_page) {
-                    html += `<button class="px-3 py-2 bg-green-600 text-white rounded font-bold">${i}</button>`;
-                } else {
-                    html +=
-                        `<button onclick="goToPage(${i})" class="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300">${i}</button>`;
+            function renderPagination(pagination) {
+                if (pagination.last_page <= 1) return;
+
+                let html = "";
+
+                // Previous Button
+                if (pagination.current_page > 1) {
+                    html += `<button onclick="goToPage(${pagination.current_page - 1})" class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white font-medium transition-colors duration-200 flex items-center gap-2">
+                    <span>←</span> Sebelumnya
+                </button>`;
+                }
+
+                // Page Numbers
+                let startPage = Math.max(1, pagination.current_page - 2);
+                let endPage = Math.min(pagination.last_page, pagination.current_page + 2);
+
+                if (startPage > 1) {
+                    html += `<button onclick="goToPage(1)" class="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors duration-200">1</button>`;
+                    if (startPage > 2) {
+                        html += `<span class="px-2 py-2 text-gray-500">...</span>`;
+                    }
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    if (i === pagination.current_page) {
+                        html += `<button class="px-3 py-2 rounded-lg bg-green-600 text-white font-bold shadow-md" disabled>${i}</button>`;
+                    } else {
+                        html += `<button onclick="goToPage(${i})" class="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors duration-200">${i}</button>`;
+                    }
+                }
+
+                if (endPage < pagination.last_page) {
+                    if (endPage < pagination.last_page - 1) {
+                        html += `<span class="px-2 py-2 text-gray-500">...</span>`;
+                    }
+                    html += `<button onclick="goToPage(${pagination.last_page})" class="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors duration-200">${pagination.last_page}</button>`;
+                }
+
+                // Next Button
+                if (pagination.current_page < pagination.last_page) {
+                    html += `<button onclick="goToPage(${pagination.current_page + 1})" class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white font-medium transition-colors duration-200 flex items-center gap-2">
+                    Berikutnya <span>→</span>
+                </button>`;
+                }
+
+                // Page Info
+                html += `<span class="ml-4 text-sm text-gray-600 font-medium">Halaman <strong>${pagination.current_page}</strong> dari <strong>${pagination.last_page}</strong></span>`;
+
+                paginationContainer.innerHTML = html;
+            }
+
+            async function updateStatistics() {
+                try {
+                    console.log("Fetching statistics...");
+                    const res = await fetch("/api/courses/search?per_page=1000");
+
+                    if (!res.ok) {
+                        throw new Error(`HTTP Error: ${res.status}`);
+                    }
+
+                    const result = await res.json();
+                    console.log("Statistics API Response:", result);
+
+                    if (result.success && result.pagination) {
+                        const total = result.pagination.total;
+
+                        // Count from all data returned (up to 1000)
+                        const allCourses = result.data || [];
+                        const wajib = allCourses.filter(c => c.category === 'Wajib').length;
+                        const peminatan = allCourses.filter(c => c.category === 'Peminatan').length;
+
+                        document.getElementById('totalCount').textContent = total;
+                        document.getElementById('wajibCount').textContent = wajib;
+                        document.getElementById('peminatanCount').textContent = peminatan;
+
+                        console.log("Statistics updated: Total=" + total + ", Wajib=" + wajib + ", Peminatan=" + peminatan);
+                    }
+                } catch (e) {
+                    console.error("Error updating statistics:", e);
                 }
             }
 
-            if (pagination.current_page < pagination.last_page) {
-                html +=
-                    `<button onclick="goToPage(${pagination.current_page + 1})" class="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600">Berikutnya →</button>`;
+            window.goToPage = function (page) {
+                currentPage = page;
+                loadCourses(page);
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
 
-            paginationContainer.innerHTML = html;
-        }
-
-        async function updateStatistics() {
-            try {
-                const res = await fetch("/api/courses/search?per_page=1000");
-                const result = await res.json();
-
-                if (result.success && result.pagination) {
-                    const total = result.pagination.total;
-
-                    // Count from all data returned (up to 1000)
-                    const allCourses = result.data || [];
-                    const wajib = allCourses.filter(c => c.category === 'Wajib').length;
-                    const peminatan = allCourses.filter(c => c.category === 'Peminatan').length;
-
-                    document.getElementById('totalCount').textContent = total;
-                    document.getElementById('wajibCount').textContent = wajib;
-                    document.getElementById('peminatanCount').textContent = peminatan;
-
-                    console.log("Statistics updated: Total=" + total + ", Wajib=" + wajib + ", Peminatan=" +
-                        peminatan);
-                }
-            } catch (e) {
-                console.error("Error updating statistics:", e);
-            }
-        }
-
-        window.goToPage = function(page) {
-            currentPage = page;
-            loadCourses(page);
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+            categoryFilter.addEventListener('change', e => {
+                currentCategory = e.target.value;
+                currentPage = 1;
+                loadCourses();
             });
-        }
 
-        categoryFilter.addEventListener('change', e => {
-            currentCategory = e.target.value;
-            currentPage = 1;
+            searchInput.addEventListener('keyup', e => {
+                currentQuery = e.target.value;
+                currentPage = 1;
+                loadCourses();
+            });
+
+            // LOAD DATA SAAT HALAMAN PERTAMA KALI DIBUKA
             loadCourses();
         });
-
-        searchInput.addEventListener('keyup', e => {
-            currentQuery = e.target.value;
-            currentPage = 1;
-            loadCourses();
-        });
-
-        // LOAD DATA SAAT HALAMAN PERTAMA KALI DIBUKA
-        loadCourses();
-    });
     </script>
 
 </body>
