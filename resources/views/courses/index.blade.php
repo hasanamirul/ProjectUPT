@@ -52,13 +52,11 @@
     td {
         padding: 16px 18px;
         background: white;
-        border-bottom: none;
         font-size: 0.95rem;
     }
 
     tbody tr {
-        transition: all 0.2s ease;
-        border-radius: 8px;
+        transition: all 0.2s ease
     }
 
     tbody tr:hover {
@@ -75,7 +73,6 @@
         background: linear-gradient(135deg, #dcfce7, #d1fae5);
         color: #166534;
         padding: 8px 12px;
-        border-radius: 8px;
         font-weight: 700;
         font-size: 0.85rem;
         letter-spacing: 0.3px;
@@ -86,7 +83,6 @@
         background: linear-gradient(135deg, #fee2e2, #fecaca);
         color: #991b1b;
         padding: 8px 12px;
-        border-radius: 8px;
         font-weight: 600;
         font-size: 0.85rem;
         display: inline-block;
@@ -96,7 +92,6 @@
         background: linear-gradient(135deg, #dcfce7, #d1fae5);
         color: #166534;
         padding: 8px 12px;
-        border-radius: 8px;
         font-weight: 600;
         font-size: 0.85rem;
         display: inline-block;
@@ -171,9 +166,9 @@
             </div>
 
             <!-- TABLE CARD -->
-            <section class="bg-white rounded-xl shadow-lg border border-green-200 overflow-hidden">
+            <section class="bg-white rounded-xl shadow-lg border-green-200 overflow-hidden">
 
-                <div class="p-8 bg-gradient-to-r from-green-50 to-white border-b border-green-200 space-y-6">
+                <div class="p-8 bg-gradient-to-r from-green-50 to-white border-green-200 space-y-6">
                     <h2 class="text-2xl font-bold text-green-700">
                         Daftar Mata Kuliah
                         <span class="text-green-500 text-lg font-semibold">(15)</span>
@@ -182,7 +177,7 @@
                     <!-- SEARCH -->
                     <div class="search-section">
                         <input id="liveSearch" type="text" placeholder="🔍 Cari nama, kode, atau dosen..."
-                            class="w-full px-5 py-3 border-2 border-green-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition duration-300 font-medium" />
+                            class="w-full px-5 py-3  border-green-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition duration-300 font-medium" />
                     </div>
                 </div>
 

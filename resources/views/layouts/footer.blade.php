@@ -5,7 +5,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 pb-10 text-center">
 
             <!-- Bottom Bar (Horizontal Layout) -->
-            <div class="col-span-3 border-t border-green-400 pt-4 pb-4 flex flex-col sm:flex-row justify-center items-center text-center w-full">
+            <div
+                class="col-span-3 border-t border-green-400 pt-4 pb-4 flex flex-col sm:flex-row justify-center items-center text-center w-full">
 
                 <!-- About -->
                 <div class="space-y-4 text-center">
