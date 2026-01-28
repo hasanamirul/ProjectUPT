@@ -14,7 +14,7 @@ class CourseController extends Controller
     public function index(): View
     {
         $courses = Course::paginate(9);
-        
+
         return view('courses.index', compact('courses'));
     }
 
@@ -62,8 +62,8 @@ class CourseController extends Controller
 
         if ($query) {
             $courses->where('name', 'LIKE', "%{$query}%")
-                    ->orWhere('course_code', 'LIKE', "%{$query}%")
-                    ->orWhere('description', 'LIKE', "%{$query}%");
+                ->orWhere('course_code', 'LIKE', "%{$query}%")
+                ->orWhere('description', 'LIKE', "%{$query}%");
         }
 
         if ($category) {
@@ -84,3 +84,5 @@ class CourseController extends Controller
             'query' => $query,
             'category' => $category,
         ]);
+    }
+}
