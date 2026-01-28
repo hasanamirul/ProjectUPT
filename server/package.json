@@ -1,0 +1,18 @@
+{
+  "name": "whtech-server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "WHTECH Mini-Portal Akademik - Node.js Backend (No Dependencies)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": [
+    "node",
+    "api",
+    "courses"
+  ],
+  "author": "",
+  "license": "ISC"
+}

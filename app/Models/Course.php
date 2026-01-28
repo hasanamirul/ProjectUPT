@@ -9,6 +9,9 @@ class Course extends Model
 {
     use HasUuids;
 
+    protected $keyType = 'string';
+    public $incrementing = false;   // PENTING
+
     protected $fillable = [
         'course_code',
         'name',
@@ -17,6 +20,4 @@ class Course extends Model
         'description',
         'category',
     ];
-
-    protected $keyType = 'string';
 }

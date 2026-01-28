@@ -13,9 +13,7 @@ class CourseController extends Controller
      */
     public function index(): View
     {
-        $courses = Course::paginate(9);
-
-        return view('courses.index', compact('courses'));
+        return view('courses.index');
     }
 
     /**
@@ -49,40 +47,40 @@ class CourseController extends Controller
     }
 
     /**
-     * API: Search courses by name, code, or category
+     * API: Search & Filter courses
      */
-    public function apiSearch(Request $request)
-    {
-        $query = $request->query('q', '');
-        $category = $request->query('category', '');
-        $page = $request->query('page', 1);
-        $perPage = $request->query('per_page', 9);
+  public function apiSearch(Request $request)
+{
+    $query = $request->q;
+    $category = $request->category;
+    $perPage = $request->per_page ?? 9;
 
-        $courses = Course::query();
+    $courses = Course::query();
 
-        if ($query) {
-            $courses->where('name', 'LIKE', "%{$query}%")
-                ->orWhere('course_code', 'LIKE', "%{$query}%")
-                ->orWhere('description', 'LIKE', "%{$query}%");
-        }
-
-        if ($category) {
-            $courses->where('category', $category);
-        }
-
-        $courses = $courses->paginate($perPage, ['*'], 'page', $page);
-
-        return response()->json([
-            'success' => true,
-            'data' => $courses->items(),
-            'pagination' => [
-                'current_page' => $courses->currentPage(),
-                'last_page' => $courses->lastPage(),
-                'total' => $courses->total(),
-                'per_page' => $courses->perPage(),
-            ],
-            'query' => $query,
-            'category' => $category,
-        ]);
+    if (!empty($query)) {
+        $courses->where(function ($q) use ($query) {
+            $q->where('name', 'like', "%$query%")
+              ->orWhere('course_code', 'like', "%$query%")
+              ->orWhere('lecturer', 'like', "%$query%");
+        });
     }
+
+    if (!empty($category)) {
+        $courses->where('category', $category);
+    }
+
+    $courses = $courses->paginate($perPage);
+
+    return response()->json([
+        'success' => true,
+        'data' => $courses->items(),
+        'pagination' => [
+            'current_page' => $courses->currentPage(),
+            'last_page' => $courses->lastPage(),
+            'total' => $courses->total(),
+            'per_page' => $courses->perPage(),
+        ]
+    ]);
+}
+
 }

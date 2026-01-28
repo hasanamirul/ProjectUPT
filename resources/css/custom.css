@@ -1,0 +1,22 @@
+/* Global overrides for consistent green/white theme */
+:root{
+    --green-600: #16a34a;
+    --green-500: #22c55e;
+    --green-700: #15803d;
+}
+
+body{
+    background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+a, button{
+    transition: all .25s ease;
+}
+
+.btn-ghost-green{
+    background: transparent;
+    color: var(--green-700);
+}
+
+/* Utility for consistent small gaps */
+.gap-consistent{gap:1rem}

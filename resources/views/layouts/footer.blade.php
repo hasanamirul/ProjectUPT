@@ -1,105 +1,88 @@
-<footer class="bg-white border-t-4 border-green-500 mt-16 md:mt-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <!-- Footer Content Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-12 md:mb-16">
-            <!-- About Section -->
-            <div class="space-y-3">
-                <h3 class="text-lg md:text-xl font-bold text-green-600 mb-4">WHTECH</h3>
-                <p class="text-gray-600 text-sm md:text-base leading-relaxed">
-                    Mini-Portal Akademik Kampus untuk manajemen mata kuliah dan akademik yang modern dan efisien.
+<footer class="bg-gradient-to-r from-green-600 to-green-500 text-white mt-8 pt-8 pb-6 rounded-t-xl shadow-inner">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <!-- Main Footer Row -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-10">
+
+            <!-- About -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold">Mini Portal akademik Kampus</h3>
+                <p class="text-green-50 text-sm leading-relaxed">
+                    Portal akademik digital untuk manajemen mata kuliah dan akademik
+                    yang modern dan efisien.
                 </p>
-                <p class="text-gray-500 text-xs md:text-sm">© 2026 WHTECH. All rights reserved.</p>
+                <p class="text-green-100 text-sm">
+                    Kami berkomitmen menyediakan layanan akademik yang mudah diakses untuk mahasiswa, dosen, dan staf kampus.
+                </p>
+                <p class="text-green-100 text-xs">
+                    © 2026 WHTECH
+                </p>
             </div>
 
-            <!-- Navigation Menu -->
-            <div class="space-y-3">
-                <h3 class="text-lg md:text-xl font-bold text-green-600 mb-4">Menu</h3>
-                <ul class="space-y-3">
+            <!-- Menu -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold">Menu</h3>
+                <ul class="space-y-3 text-sm">
                     <li>
                         <a href="{{ route('courses.index') }}"
-                            class="text-gray-600 hover:text-green-600 transition-colors duration-200 text-sm md:text-base font-medium inline-flex items-center group">
-                            <span class="mr-2">→</span>
-                            <span class="group-hover:underline">Daftar Mata Kuliah</span>
+                            class="text-green-50 hover:text-white transition font-medium flex items-center group">
+                            <span class="mr-2 group-hover:translate-x-1 transition">›</span>
+                            Daftar Mata Kuliah
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('dashboard') }}"
-                            class="text-gray-600 hover:text-green-600 transition-colors duration-200 text-sm md:text-base font-medium inline-flex items-center group">
-                            <span class="mr-2">→</span>
-                            <span class="group-hover:underline">Dashboard</span>
+                            class="text-green-50 hover:text-white transition font-medium flex items-center group">
+                            <span class="mr-2 group-hover:translate-x-1 transition">›</span>
+                            Dashboard
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('profile.edit') }}"
-                            class="text-gray-600 hover:text-green-600 transition-colors duration-200 text-sm md:text-base font-medium inline-flex items-center group">
-                            <span class="mr-2">→</span>
-                            <span class="group-hover:underline">Profile</span>
+                            class="text-green-50 hover:text-white transition font-medium flex items-center group">
+                            <span class="mr-2 group-hover:translate-x-1 transition">›</span>
+                            Profil
                         </a>
                     </li>
                 </ul>
             </div>
 
-            <!-- Contact Section -->
-            <div class="space-y-3">
-                <h3 class="text-lg md:text-xl font-bold text-green-600 mb-4">Hubungi Kami</h3>
-                <div class="space-y-2">
-                    <p class="text-gray-600 text-sm md:text-base flex items-start space-x-2">
-                        <span>📧</span>
-                        <span>info@whtech.id</span>
-                    </p>
-                    <p class="text-gray-600 text-sm md:text-base flex items-start space-x-2">
-                        <span>📱</span>
-                        <span>+62 xxx xxx xxx</span>
-                    </p>
-                    <p class="text-gray-600 text-sm md:text-base flex items-start space-x-2">
-                        <span>📍</span>
-                        <span>Kampus Utama, Indonesia</span>
-                    </p>
+            <!-- Contact -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold">Hubungi Kami</h3>
+                <div class="space-y-2 text-green-50 text-sm">
+                    <p><span class="font-semibold">Email:</span> info@whtech.id</p>
+                    <p><span class="font-semibold">Telp:</span> +62 xxx xxx xxx</p>
+                    <p><span class="font-semibold">Alamat:</span> Indonesia</p>
                 </div>
             </div>
 
             <!-- Quick Info -->
-            <div class="space-y-3">
-                <h3 class="text-lg md:text-xl font-bold text-green-600 mb-4">Informasi Cepat</h3>
-                <div class="space-y-2 text-sm md:text-base">
-                    <p class="text-gray-600 flex items-center space-x-2">
-                        <span>✓</span>
-                        <span>20+ Mata Kuliah</span>
-                    </p>
-                    <p class="text-gray-600 flex items-center space-x-2">
-                        <span>✓</span>
-                        <span>Dosen Berpengalaman</span>
-                    </p>
-                    <p class="text-gray-600 flex items-center space-x-2">
-                        <span>✓</span>
-                        <span>Akreditasi Internasional</span>
-                    </p>
-                </div>
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold">Informasi</h3>
+                <ul class="space-y-2 text-green-50 text-sm">
+                    <li>• 15+ Mata Kuliah</li>
+                    <li>• Dosen Profesional</li>
+                    <li>• Akreditasi Baik</li>
+                </ul>
             </div>
+
         </div>
 
-        <!-- Divider -->
-        <div class="border-t-2 border-green-100 pt-8 md:pt-12">
-            <!-- Social & Copyright -->
-            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                <p class="text-gray-600 text-sm md:text-base text-center md:text-left">
-                    Dikembangkan dengan ❤️ untuk kemajuan akademik
-                </p>
-                <div class="flex space-x-4 md:space-x-6">
-                    <a href="#"
-                        class="text-gray-500 hover:text-green-600 transition-colors duration-200 text-sm md:text-base font-medium">
-                        Privacy
-                    </a>
-                    <a href="#"
-                        class="text-gray-500 hover:text-green-600 transition-colors duration-200 text-sm md:text-base font-medium">
-                        Terms
-                    </a>
-                    <a href="#"
-                        class="text-gray-500 hover:text-green-600 transition-colors duration-200 text-sm md:text-base font-medium">
-                        Support
-                    </a>
-                </div>
+        <!-- Bottom Bar -->
+        <div class="border-t border-green-400 pt-4 pb-4 flex flex-col md:flex-row justify-between items-center">
+
+            <p class="text-green-100 text-sm">
+                Dikembangkan untuk kemajuan akademik. Hubungi kami di support@whtech.id untuk bantuan.
+            </p>
+
+            <div class="flex gap-6 text-sm font-medium mt-4 md:mt-0">
+                <a href="#" class="text-green-50 hover:text-white transition">Privacy</a>
+                <a href="#" class="text-green-50 hover:text-white transition">Terms</a>
+                <a href="#" class="text-green-50 hover:text-white transition">Support</a>
             </div>
+
         </div>
+
     </div>
 </footer>
