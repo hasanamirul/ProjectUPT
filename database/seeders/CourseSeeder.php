@@ -54,6 +54,22 @@ class CourseSeeder extends Seeder
                 'category' => 'Wajib',
             ],
             [
+                'course_code' => 'CS106',
+                'name' => 'Sistem Operasi',
+                'sks' => 3,
+                'lecturer' => 'Prof. Joko Suharyo',
+                'description' => 'Konsep sistem operasi, process management, memory management, file system, dan security.',
+                'category' => 'Wajib',
+            ],
+            [
+                'course_code' => 'CS107',
+                'name' => 'Teori Kompiler',
+                'sks' => 3,
+                'lecturer' => 'Dr. Wahyu Purnomo',
+                'description' => 'Lexical analysis, syntax analysis, semantic analysis, code generation, dan optimization.',
+                'category' => 'Wajib',
+            ],
+            [
                 'course_code' => 'CS201',
                 'name' => 'Mobile Development',
                 'sks' => 4,
@@ -91,6 +107,14 @@ class CourseSeeder extends Seeder
                 'sks' => 3,
                 'lecturer' => 'Dr. Bambang Setiawan',
                 'description' => 'Pengembangan sistem tertanam, IoT architecture, sensor integration, dan real-time systems.',
+                'category' => 'Peminatan',
+            ],
+            [
+                'course_code' => 'CS206',
+                'name' => 'Computer Vision',
+                'sks' => 3,
+                'lecturer' => 'Dr. Sinta Suryawati',
+                'description' => 'Image processing, feature detection, object recognition, dan aplikasi computer vision modern.',
                 'category' => 'Peminatan',
             ],
             [
@@ -139,6 +163,14 @@ class CourseSeeder extends Seeder
                 'sks' => 3,
                 'lecturer' => 'Dr. Agus Kurniawan',
                 'description' => 'Teknologi blockchain, cryptocurrency, smart contracts, dan aplikasi terdesentralisasi.',
+                'category' => 'Peminatan',
+            ],
+            [
+                'course_code' => 'IT205',
+                'name' => 'Web Services & API',
+                'sks' => 3,
+                'lecturer' => 'Ir. Dedi Setiawan',
+                'description' => 'Desain dan implementasi REST API, GraphQL, microservices, dan integrasi sistem.',
                 'category' => 'Peminatan',
             ],
         ];
