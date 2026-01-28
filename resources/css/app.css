@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global override: force all visible text to black */
+:root { --global-text-color: #000000; }
+html, body, #app, .antialiased { color: var(--global-text-color) !important; }
+/* Ensure text in all elements is black (overrides utility classes) */
+* { color: var(--global-text-color) !important; }
+

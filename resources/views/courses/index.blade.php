@@ -37,8 +37,6 @@
     /* ================= TABLE ================= */
     table {
         width: 100%;
-        border-collapse: separate;
-        border-spacing: 0 8px;
     }
 
     th {
@@ -126,6 +124,32 @@
         transform: translateY(-4px);
         box-shadow: 0 12px 24px rgba(22, 163, 74, 0.2);
     }
+
+    /* ================= RESPONSIVE DESIGN ================= */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 12px 0;
+        }
+
+        th,
+        td {
+            padding: 10px 12px;
+            font-size: 0.90rem;
+        }
+
+        .course-code {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+        }
+
+        .stat-card p {
+            font-size: 1rem;
+        }
+
+        .table-wrapper {
+            padding-top: 12px;
+        }
+    }
     </style>
 </head>
 
@@ -134,15 +158,6 @@
     {{-- NAVBAR --}}
     @include('layouts.navbar')
 
-    <!-- HERO -->
-    <section class="bg-gradient-to-r from-green-600 to-green-500 text-white hero-section">
-        <div class="max-w-7xl mx-auto px-6">
-            <h1 class="text-4xl font-bold mb-3">Daftar Mata Kuliah</h1>
-            <p class="text-green-100 max-w-2xl">
-                Daftar lengkap mata kuliah yang tersedia di program studi Mini Portal akademik Kampus
-            </p>
-        </div>
-    </section>
 
     <main class="max-w-7xl mx-auto px-6 py-8">
 
@@ -166,9 +181,8 @@
 
                     <!-- SEARCH -->
                     <div class="search-section">
-                        <input id="liveSearch" type="text" placeholder="🔍 Cari nama, kode, atau dosen..." class="w-full px-5 py-3 border-2 border-green-200 rounded-lg
-                               focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none
-                               transition duration-300 font-medium" />
+                        <input id="liveSearch" type="text" placeholder="🔍 Cari nama, kode, atau dosen..."
+                            class="w-full px-5 py-3 border-2 border-green-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition duration-300 font-medium" />
                     </div>
                 </div>
 
@@ -184,133 +198,88 @@
                                 <th style="width: 20%;">Kategori</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- DATA DINAMIS DARI DATABASE -->
-                            @forelse($courses ?? [] as $index => $course)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td><span class="course-code">{{ $course->course_code }}</span></td>
-                                <td>{{ $course->name }}</td>
-                                <td>{{ $course->lecturer }}</td>
-                                <td class="text-center font-semibold">{{ $course->sks }}</td>
-                                <td>
-                                    @if($course->category === 'Wajib')
-                                    <span class="category-wajib">Wajib</span>
-                                    @else
-                                    <span class="category-peminatan">Peminatan</span>
-                                    @endif
-                                </td>
-                            </tr>
-                            @empty
-                            <!-- FALLBACK DATA DUMMY -->
-                            <tr>
-                                <td>1</td>
-                                <td><span class="course-code">CS101</span></td>
-                                <td>Algoritma & Pemrograman</td>
-                                <td>Dr. Budi Santoso</td>
-                                <td class="text-center">3</td>
-                                <td><span class="category-wajib">Wajib</span></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><span class="course-code">CS102</span></td>
-                                <td>Struktur Data</td>
-                                <td>Prof. Siti Nurhaliza</td>
-                                <td class="text-center">3</td>
-                                <td><span class="category-wajib">Wajib</span></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td><span class="course-code">CS103</span></td>
-                                <td>Database Management System</td>
-                                <td>Dr. Ahmad Wijaya</td>
-                                <td class="text-center">3</td>
-                                <td><span class="category-wajib">Wajib</span></td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td><span class="course-code">CS109</span></td>
-                                <td>Data Mining</td>
-                                <td>Dr. Ahmad Husain</td>
-                                <td class="text-center">3</td>
-                                <td><span class="category-wajib">Wajib</span></td>
-                            </tr>
 
-                            <tr>
-                                <td>5</td>
-                                <td><span class="course-code">CS109</span></td>
-                                <td>Data Mining</td>
-                                <td>Dr. Ahmad Husain</td>
-                                <td class="text-center">3</td>
-                                <td><span class="category-wajib">Wajib</span></td>
-                            </tr>
+                        <tbody id="coursesTbody">
+                            @php
+                            $present = collect($courses ?? []);
+                            // prepare dummy TI-related courses
+                            $dummyCourses = [
+                            ['course_code' => 'TI101', 'name' => 'Pengantar Teknologi Informasi', 'sks' => 3, 'lecturer'
+                            => 'Dr. Agus Prasetyo, M.Kom', 'category' => 'Wajib'],
+                            ['course_code' => 'TI102', 'name' => 'Algoritma & Pemrograman', 'sks' => 3, 'lecturer' =>
+                            'Prof. Dr. Siti Aminah, S.Kom, M.Sc', 'category' => 'Wajib'],
+                            ['course_code' => 'TI103', 'name' => 'Struktur Data', 'sks' => 3, 'lecturer' => 'Dr. Budi
+                            Santoso, M.Kom', 'category' => 'Wajib'],
+                            ['course_code' => 'TI201', 'name' => 'Basis Data', 'sks' => 3, 'lecturer' => 'Ir. Rina
+                            Cahyani, M.T', 'category' => 'Wajib'],
+                            ['course_code' => 'TI202', 'name' => 'Sistem Operasi', 'sks' => 3, 'lecturer' => 'Dr. Hendra
+                            Wijaya, S.Kom, M.Kom', 'category' => 'Wajib'],
+                            ['course_code' => 'TI203', 'name' => 'Jaringan Komputer', 'sks' => 3, 'lecturer' => 'Ir.
+                            Lina Marlina, M.T', 'category' => 'Peminatan'],
+                            ['course_code' => 'TI204', 'name' => 'Keamanan Siber', 'sks' => 3, 'lecturer' => 'Dr. Yuni
+                            Magdalena, S.Kom', 'category' => 'Peminatan'],
+                            ['course_code' => 'TI301', 'name' => 'Rekayasa Perangkat Lunak', 'sks' => 4, 'lecturer' =>
+                            'Prof. Maryoto Adi, M.Sc', 'category' => 'Wajib'],
+                            ['course_code' => 'TI302', 'name' => 'Pengembangan Aplikasi Mobile', 'sks' => 3, 'lecturer'
+                            => 'Dr. Haris Supriyanto, M.Kom', 'category' => 'Peminatan'],
+                            ['course_code' => 'TI303', 'name' => 'Kecerdasan Buatan', 'sks' => 3, 'lecturer' => 'Prof.
+                            Erwin Sutrisno, Ph.D', 'category' => 'Peminatan'],
+                            ['course_code' => 'TI304', 'name' => 'Pemrograman Web Lanjut', 'sks' => 3, 'lecturer' =>
+                            'Dr. Rina Cahyani, S.Kom', 'category' => 'Wajib'],
+                            ['course_code' => 'TI305', 'name' => 'Analisis & Desain Sistem', 'sks' => 3, 'lecturer' =>
+                            'Dr. Anita Kusuma, M.T', 'category' => 'Wajib'],
+                            ['course_code' => 'TI306', 'name' => 'Big Data & Cloud Computing', 'sks' => 3, 'lecturer' =>
+                            'Dr. Farah Azizah, M.Kom', 'category' => 'Peminatan'],
+                            ['course_code' => 'TI307', 'name' => 'Internet of Things', 'sks' => 3, 'lecturer' => 'Ir.
+                            Bambang Setiawan, M.Eng', 'category' => 'Peminatan'],
+                            ['course_code' => 'TI308', 'name' => 'Interaksi Manusia dan Komputer', 'sks' => 3,
+                            'lecturer' => 'Dr. Sinta Suryawati, M.Des', 'category' => 'Peminatan'],
+                            ];
 
-                            <tr>
-                                <td>6</td>
-                                <td><span class="course-code">CS100</span></td>
-                                <td>Sistem Operasi</td>
-                                <td>Dr. Husain Hasan</td>
-                                <td class="text-center">3</td>
-                                <td><span class="category-wajib">Peminatan</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>7</td>
-                                <td><span class="course-code">CS190</span></td>
-                                <td>Kerja Praktek</td>
-                                <td>Dr. Lisa NUr</td>
-                                <td class="text-center">3</td>
-                                <td><span class="category-wajib">Wajib</span></td>
-                            </tr>
-                            <tr></tr>
-                            <td>8</td>
-                            <td><span class="course-code">CS201</span></td>
-                            <td>Jaringan Komputer</td>
-                            <td>Dr. Lina Marlina</td>
-                            <td class="text-center">3</td>
-                            <td><span class="category-peminatan">Peminatan</span></td>
-                            </tr>
-
-
-                            <tr>
-                                <td>9</td>
-                                <td><span class="course-code">CS202</span></td>
-                                <td>Algoritma</td>
-                                <td>Dr. Anwar</td>
-                                <td class="text-center">3</td>
-                                <td><span class="category-wajib">Wajib</span></td>
-                            </tr>
-
-
-                            <tr>
-                                <td>10</td>
-                                <td><span class="course-code">CS208</span></td>
-                                <td>Aljabar</td>
-                                <td>Nita Zahra S.Kom</td>
-                                <td class="text-center">3</td>
-                                <td><span class="category-wajib">Wajib</span></td>
-                            </tr>
-
-                            @endforelse
+                            $rows = $present->take(15)->values()->toArray();
+                            $needed = 15 - count($rows);
+                            for ($i = 0; $i < $needed; $i++) { $rows[]=$dummyCourses[$i % count($dummyCourses)]; }
+                                @endphp @foreach($rows as $index=> $course)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td><span
+                                            class="course-code">{{ $course['course_code'] ?? $course->course_code ?? '' }}</span>
+                                    </td>
+                                    <td>{{ $course['name'] ?? $course->name ?? '' }}</td>
+                                    <td>{{ $course['lecturer'] ?? $course->lecturer ?? '' }}</td>
+                                    <td class="text-center font-semibold">{{ $course['sks'] ?? $course->sks ?? '' }}
+                                    </td>
+                                    <td>
+                                        @php $cat = $course['category'] ?? ($course->category ?? 'Peminatan'); @endphp
+                                        @if($cat === 'Wajib')
+                                        <span class="category-wajib">Wajib</span>
+                                        @else
+                                        <span class="category-peminatan">Peminatan</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
                         </tbody>
                     </table>
+
+                    <div id="pagination" class="mt-6 flex items-center justify-end gap-3 px-2"></div>
                 </div>
             </section>
 
             <!-- STATISTIC CARDS -->
             <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-                <div class="bg-white p-8 rounded-xl border-2 border-green-200 shadow-lg stat-card">
+                <div class="bg-white p-8 rounded-xl  border-green-200 shadow-lg stat-card">
                     <p id="totalCount" class="text-5xl font-bold text-green-600 mb-3">15</p>
                     <p class="text-green-700 font-semibold text-lg">Total Mata Kuliah</p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl border-2 border-red-200 shadow-lg stat-card">
+                <div class="bg-white p-8 rounded-xl  border-red-200 shadow-lg stat-card">
                     <p id="wajibCount" class="text-5xl font-bold text-red-600 mb-3">7</p>
                     <p class="text-gray-700 font-semibold text-lg">Mata Kuliah Wajib</p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl border-2 border-green-200 shadow-lg stat-card">
+                <div class="bg-white p-8 rounded-xl  border-green-200 shadow-lg stat-card">
                     <p id="peminatanCount" class="text-5xl font-bold text-green-600 mb-3">8</p>
                     <p class="text-gray-700 font-semibold text-lg">Mata Kuliah Peminatan</p>
                 </div>
@@ -324,39 +293,64 @@
     {{-- FOOTER --}}
     @include('layouts.footer')
 
-    <!-- SCRIPT -->
+    <!-- SCRIPT: Client-side filtering only; API removed -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const input = document.getElementById('liveSearch');
-        const table = document.getElementById('coursesTable');
-        const tbody = table.tBodies[0];
-
+        const tbody = document.getElementById('coursesTbody');
         const totalEl = document.getElementById('totalCount');
         const wajibEl = document.getElementById('wajibCount');
         const peminatanEl = document.getElementById('peminatanCount');
 
-        function updateCounts() {
-            const rows = [...tbody.rows].filter(r => r.style.display !== 'none');
-            totalEl.textContent = rows.length;
+        // simpan HTML awal (15 data dari server)
+        const initialHtml = tbody.innerHTML;
 
-            wajibEl.textContent = rows.filter(r =>
-                r.textContent.toLowerCase().includes('wajib')
-            ).length;
-
-            peminatanEl.textContent = rows.filter(r =>
-                r.textContent.toLowerCase().includes('peminatan')
-            ).length;
+        function computeCountsFromVisibleRows() {
+            const rows = Array.from(tbody.querySelectorAll('tr')).filter(r => r.style.display !== 'none' && r
+                .querySelector('td'));
+            const total = rows.length;
+            let wajib = 0;
+            rows.forEach(r => {
+                if (r.textContent.toLowerCase().includes('wajib')) wajib++;
+            });
+            return {
+                total,
+                wajib,
+                pem: total - wajib
+            };
         }
 
-        input.addEventListener('input', e => {
-            const q = e.target.value.toLowerCase();
-            [...tbody.rows].forEach(row => {
-                row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
-            });
-            updateCounts();
-        });
+        function updateCounts(obj) {
+            totalEl.textContent = obj.total;
+            wajibEl.textContent = obj.wajib;
+            peminatanEl.textContent = obj.pem;
+        }
 
-        updateCounts();
+        // initial counts
+        updateCounts(computeCountsFromVisibleRows());
+
+        function filterTable(q) {
+            const term = q.trim().toLowerCase();
+            const rows = Array.from(tbody.querySelectorAll('tr')).filter(r => r.querySelector('td'));
+            if (!term) {
+                rows.forEach(r => r.style.display = '');
+            } else {
+                rows.forEach(r => {
+                    const text = r.textContent.toLowerCase();
+                    r.style.display = text.includes(term) ? '' : 'none';
+                });
+            }
+            updateCounts(computeCountsFromVisibleRows());
+        }
+
+        let debounceTimer = null;
+        input.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const q = input.value;
+                filterTable(q);
+            }, 150);
+        });
     });
     </script>
 
